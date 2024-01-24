@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import BusinessIcon from "@mui/icons-material/Business";
 import LinkIcon from "@mui/icons-material/Link";
 import PhoneRoundedIcon from "@mui/icons-material/PhoneRounded";

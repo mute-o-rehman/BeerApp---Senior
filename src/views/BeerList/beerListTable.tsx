@@ -51,7 +51,6 @@ function HeaderCell({
     <TableCell key={id}>
       <TableSortLabel
         active={orderBy === sortKey && order !== "none"}
-        // eslint-disable-next-line no-nested-ternary, no-undefined
         direction={
           orderBy === sortKey ? (order === "none" ? undefined : order) : "asc"
         }
@@ -131,7 +130,6 @@ export default function BeerListTable(props: TableProps) {
                   orderBy={orderBy}
                 />
               ))}
-              {/* Add an empty cell for the FavoriteButton */}
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -153,11 +151,10 @@ export default function BeerListTable(props: TableProps) {
                 {columns.map(({ id }) => (
                   <TableCell key={id}>{item[id]}</TableCell>
                 ))}
-                {/* Add a separate cell for the FavoriteButton */}
                 <TableCell>
                   <FavoriteButton
                     onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                      event.stopPropagation(); // Stop event propagation
+                      event.stopPropagation();
                       updateFavorites({ id: item.id, name: item.name });
                     }}
                     isActive={isItemFavorite({
