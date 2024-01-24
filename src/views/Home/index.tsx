@@ -27,12 +27,11 @@ const Home = () => {
   const [savedList, setSavedList] = useState<Array<Beer>>([]);
   const [filterQuery, setFilterQuery] = useState<string>("");
 
-  // eslint-disable-next-line
   useEffect(() => {
     const favoritesObject = getFavoritesItems();
-    const favoritesArray = Object.values(favoritesObject) as Beer[]; // Type assertion
-    setSavedList(favoritesArray || []); // Use the favorites array if available, or set an empty array
-    return fetchData.bind(this, setBeerList);
+    const favoritesArray = Object.values(favoritesObject) as Beer[];
+    setSavedList(favoritesArray || []);
+    fetchData(setBeerList);
   }, []);
 
   const navigate = useNavigate();
@@ -41,12 +40,8 @@ const Home = () => {
     setFilterQuery(e.target.value);
   };
 
-  const handleReloadList = () => {
+  const reloadList = () => {
     fetchData(setBeerList);
-    // Optionally update the savedList if there are changes to favorites
-    const favoritesObject = getFavoritesItems();
-    const favoritesArray = Object.values(favoritesObject) as Beer[];
-    setSavedList(favoritesArray || []);
   };
 
   const filteredBeers = beerList.filter((beer) => {
@@ -62,6 +57,12 @@ const Home = () => {
     setSavedList(favoritesArray || []);
   };
 
+  const noItemsMessage = (
+    <p style={{ textAlign: "center", marginTop: "10px", color: "#666" }}>
+      No items found.
+    </p>
+  );
+
   return (
     <article>
       <section>
@@ -74,20 +75,24 @@ const Home = () => {
                   variant="outlined"
                   onChange={handleChange}
                 />
-                <Button variant="contained" onClick={handleReloadList}>
+                <Button variant="contained" onClick={reloadList}>
                   Reload list
                 </Button>
               </div>
-              <ul className={styles.list}>
-                {filteredBeers.map((beer, index) => (
-                  <li key={index.toString()}>
-                    <Checkbox />
-                    <Link component={RouterLink} to={`/beer/${beer.id}`}>
-                      {beer.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              {filteredBeers.length === 0 ? (
+                noItemsMessage
+              ) : (
+                <ul className={styles.list}>
+                  {filteredBeers.map((beer, index) => (
+                    <li key={index.toString()}>
+                      <Checkbox />
+                      <Link component={RouterLink} to={`/beer/${beer.id}`}>
+                        {beer.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </Paper>
 

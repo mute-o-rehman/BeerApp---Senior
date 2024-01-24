@@ -6,7 +6,6 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import FavoriteButton from "../../components/FavoriteButton";
 import { isItemFavorite, updateFavorites } from "../../utils/favorites";
 import { BeerDetails } from "./beerDetails";
-import { GoodToKnow } from "./goodToKnow";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Beer = () => {
@@ -42,7 +41,6 @@ const Beer = () => {
             <Grid container marginBottom={5} spacing={2}>
               <Grid md={12} xs={12}>
                 <BeerDetails beer={beer} />
-                <GoodToKnow />
                 <Box marginTop={5}>
                   <Button
                     variant="contained"
