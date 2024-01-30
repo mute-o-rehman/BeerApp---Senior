@@ -1,20 +1,23 @@
 import { Paper } from "@mui/material";
 import { useEffect, useState } from "react";
 
+// Custom hook for debouncing API requests
 import { useDebounce } from "../../hooks/useDebounce";
+
+// Types and constants related to the BeerList component
 import { ApiParams, Beer, SORT } from "../../types";
 import BeerListTable from "./beerListTable";
 import { SortFields } from "./consts";
 import { fetchData, fetchMetadata } from "./utils";
 
+// Object defining the next sorting order for each existing order
 const nextOrder = {
   asc: "desc",
   desc: "none",
   none: "asc",
 } as Record<SORT, SORT>;
 
-// eslint-disable-next-line max-lines-per-function
-export default function BeerListView() {
+const BeerList = () => {
   const [beerList, setBeerList] = useState<Array<Beer>>([]);
   const [order, setOrder] = useState<SORT>("none");
   const [orderBy, setOrderBy] = useState<SortFields>("name");
@@ -24,9 +27,12 @@ export default function BeerListView() {
     page: 1,
   });
 
+  // Debounced API request for fetching metadata
   const fetchMetadataDebounced = useDebounce(() =>
     fetchMetadata(setTotal, filterParams)
   );
+
+  // Debounced API request for fetching beer list
   const fetchDataDebounced = useDebounce(() =>
     fetchData(setBeerList, {
       ...filterParams,
@@ -34,6 +40,7 @@ export default function BeerListView() {
     })
   );
 
+  // UseEffect hooks to handle metadata and beer list fetching
   useEffect(fetchMetadataDebounced, [fetchMetadataDebounced, filterParams]);
   useEffect(fetchDataDebounced, [
     fetchDataDebounced,
@@ -42,6 +49,7 @@ export default function BeerListView() {
     orderBy,
   ]);
 
+  // Functions for handling pagination, sorting, and filtering
   const setPage = (newPage: number) =>
     setFilterParams({
       ...filterParams,
@@ -57,7 +65,6 @@ export default function BeerListView() {
 
   const setSort = (id: SortFields) => {
     const newOrder: SORT = orderBy === id ? nextOrder[order] : "asc";
-
     setOrderBy(id);
     setOrder(newOrder);
   };
@@ -85,4 +92,6 @@ export default function BeerListView() {
       />
     </Paper>
   );
-}
+};
+
+export default BeerList;

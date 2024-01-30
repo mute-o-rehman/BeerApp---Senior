@@ -28,22 +28,28 @@ const Home = () => {
   const [filterQuery, setFilterQuery] = useState<string>("");
 
   useEffect(() => {
+    // Fetch favorites from local storage and update state
     const favoritesObject = getFavoritesItems();
     const favoritesArray = Object.values(favoritesObject) as Beer[];
     setSavedList(favoritesArray || []);
+
+    // Fetch beer list from API and update state
     fetchData(setBeerList);
   }, []);
 
   const navigate = useNavigate();
 
+  // Event handler for filtering beers based on input text
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFilterQuery(e.target.value);
   };
 
+  // Function to reload the beer list
   const reloadList = () => {
     fetchData(setBeerList);
   };
 
+  // Filtering the beers based on the filter query
   const filteredBeers = beerList.filter((beer) => {
     return beer.name.toLowerCase().includes(filterQuery.toLowerCase());
   });
@@ -52,6 +58,7 @@ const Home = () => {
     // Remove the clicked beer from favorites
     updateFavorites({ id: beer.id, name: beer.name });
 
+    // Update the saved list in the state
     const favoritesObject = getFavoritesItems();
     const favoritesArray = Object.values(favoritesObject) as Beer[];
     setSavedList(favoritesArray || []);
@@ -79,6 +86,7 @@ const Home = () => {
                   Reload list
                 </Button>
               </div>
+              {/* Displaying filtered beer list or no items message */}
               {filteredBeers.length === 0 ? (
                 noItemsMessage
               ) : (
@@ -95,7 +103,6 @@ const Home = () => {
               )}
             </div>
           </Paper>
-
           <Paper>
             <div className={styles.listContainer}>
               <div className={styles.listHeader}>
@@ -111,9 +118,11 @@ const Home = () => {
                   Remove all items
                 </Button>
               </div>
+              {/* Displaying the saved items list */}
               <List>
                 {savedList.map((beer, index) => (
                   <ListItem key={index.toString()}>
+                    {/* Delete icon to remove a saved item */}
                     <ListItemIcon>
                       <DeleteIcon
                         onClick={() => handleRemoveFromFavorites(beer)}

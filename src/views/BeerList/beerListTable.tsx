@@ -17,11 +17,13 @@ import TableRow from "@mui/material/TableRow";
 import { ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Types and utility functions related to the BeerListTable component
 import { ApiParams, Beer, SORT } from "../../types";
 import { Column, columns, SortFields, types } from "./consts";
 import { isItemFavorite, updateFavorites } from "../../utils/favorites";
 import FavoriteButton from "../../components/FavoriteButton";
 
+// Props interface for Column component
 interface ColumnProps {
   order: SORT;
   orderBy: SortFields;
@@ -29,6 +31,7 @@ interface ColumnProps {
   setFilterBy: (id: keyof ApiParams, value: string) => void;
 }
 
+// Props interface for BeerListTable component
 interface TableProps extends ColumnProps {
   total: number;
   page: number;
@@ -38,13 +41,14 @@ interface TableProps extends ColumnProps {
   items: Beer[];
 }
 
-function HeaderCell({
+// HeaderCell component for rendering table header cells
+const HeaderCell = ({
   column,
   order,
   orderBy,
   setSort,
   setFilterBy,
-}: ColumnProps & { column: Column }) {
+}: ColumnProps & { column: Column }) => {
   const { id, label, sortKey, filterKey } = column;
 
   return (
@@ -92,9 +96,10 @@ function HeaderCell({
       </TableSortLabel>
     </TableCell>
   );
-}
+};
 
-export default function BeerListTable(props: TableProps) {
+// BeerListTable component for rendering the beer list table
+const BeerListTable = (props: TableProps) => {
   const {
     setPage,
     setRowsPerPage,
@@ -118,6 +123,7 @@ export default function BeerListTable(props: TableProps) {
         }}
       >
         <Table stickyHeader>
+          {/* TableHead component for rendering the table header */}
           <TableHead>
             <TableRow>
               {columns.map((column) => (
@@ -133,6 +139,7 @@ export default function BeerListTable(props: TableProps) {
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
+          {/* TableBody component for rendering the table body */}
           <TableBody
             sx={{
               td: {
@@ -141,6 +148,7 @@ export default function BeerListTable(props: TableProps) {
             }}
           >
             {items.map((item) => (
+              // TableRow component for rendering each table row
               <TableRow
                 key={item.id}
                 onClick={() => navigate(`/beer/${item.id}`)}
@@ -151,6 +159,7 @@ export default function BeerListTable(props: TableProps) {
                 {columns.map(({ id }) => (
                   <TableCell key={id}>{item[id]}</TableCell>
                 ))}
+                {/* TableCell component for rendering the favorite button */}
                 <TableCell>
                   <FavoriteButton
                     onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
@@ -181,4 +190,6 @@ export default function BeerListTable(props: TableProps) {
       />
     </Box>
   );
-}
+};
+
+export default BeerListTable;

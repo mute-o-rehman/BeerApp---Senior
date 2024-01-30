@@ -7,13 +7,16 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { ReactNode } from "react";
 import { Beer as IBeer } from "../../types";
 
+// Type definition for items with icons in beer details
 type ListWithIcon = {
   icon: JSX.Element;
   title: string;
   children: ReactNode;
 }[];
 
+// Component to display detailed information about a beer
 export function BeerDetails({ beer }: { beer?: IBeer }) {
+  // Array of items with icons and corresponding beer details
   const items: ListWithIcon = [
     {
       icon: <SegmentIcon />,
@@ -58,6 +61,7 @@ export function BeerDetails({ beer }: { beer?: IBeer }) {
     },
   ];
 
+  // JSX structure for displaying beer details in a Paper component
   return (
     <Paper>
       <Box padding={2}>

@@ -8,11 +8,14 @@ import { isItemFavorite, updateFavorites } from "../../utils/favorites";
 import { BeerDetails } from "./beerDetails";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
+// Functional component for individual beer details
 const Beer = () => {
+  // Extracting the 'id' parameter from the URL using React Router's 'useParams'
   const { id } = useParams();
+  // State variable to store the beer details
   const [beer, setBeer] = useState<IBeer>();
 
-  // eslint-disable-next-line
+  // Fetch beer details when the component mounts or 'id' changes
   useEffect(fetchData.bind(this, setBeer, id), [id]);
 
   const navigate = useNavigate();
